@@ -1,0 +1,23 @@
+{
+  "name": "ikea-game-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redrick-tmn/ikea-game-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redrick-tmn/ikea-game-bot/issues"
+  },
+  "homepage": "https://github.com/redrick-tmn/ikea-game-bot#readme",
+  "dependencies": {
+    "fs": "~0.0.1-security",
+    "node-telegram-bot-api": "~0.23.3"
+  }
+}
