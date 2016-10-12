@@ -1,16 +1,14 @@
 "use strict";
 
+let FurnitureModel = require("./repositories/furniture-repository.js")
+
 class QuizProvider{
     constructor(){
         
     }
     
     getNext(){
-        return {
-            text: "Who are you, little boy?",
-            answers: ["Sucker", "Sucker", "Sucker", "Mommy's sissy"],
-            rightAnswer: "Sucker"
-        };    
+        return FurnitureModel.random();
     }
 }
 

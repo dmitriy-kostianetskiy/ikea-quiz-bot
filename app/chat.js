@@ -67,17 +67,19 @@ class Chat {
     
     _handleStartGame(msg){
         
-        var quiz = this.provider.getNext();
-    
-        var options = {
-            reply_markup: {
-                keyboard: this._createAnswerKeyboard(quiz.answers)
-            }
-        };
+        return this.provider.getNext().then((data) => {
+            var options = {
+             //   reply_markup: {
+             //       keyboard: this._createAnswerKeyboard(quiz.answers)
+             //   }
+            };
         
-        this.rightAnswer = quiz.rightAnswer;
-        
-        return this._sendMessage(quiz.text, options);
+            //this.rightAnswer = quiz.rightAnswer;
+            
+            //return this._sendMessage(quiz.text, options);
+            
+            return this._sendMessage(data.name);
+        });
     }
     
     _createAnswerKeyboard(data){

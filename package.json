@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/redrick-tmn/ikea-game-bot#readme",
   "dependencies": {
-    "fs": "~0.0.1-security",
+    "mongoose": "4.6.3",
     "node-telegram-bot-api": "~0.23.3"
   }
 }
