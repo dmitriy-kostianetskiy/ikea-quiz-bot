@@ -9,7 +9,7 @@ var QuizProvider = require('./quiz-provider.js');
 class Bot {
     
     constructor() {
-        this.config = JSON.parse(fs.readFileSync('bot-config.json', 'utf8'));
+        this.config = JSON.parse(fs.readFileSync('./app/bot-config.json', 'utf8'));
         this.bot = new TelegramBot(this.config.token, {
           polling: true
         });
