@@ -1,34 +1,32 @@
 "use strict";
 
-var TelegramBot = require('node-telegram-bot-api');
-var fs = require('fs');
+let TelegramBot = require('node-telegram-bot-api');
 
-var Chat = require('./chat.js');
-var QuizProvider = require('./quiz-provider.js');
+
+let CommandsHandler = require('./commands-handler.js');
+let botConfig = require('./bot-config.js');
 
 class Bot {
     
     constructor() {
-        this.config = JSON.parse(fs.readFileSync('./app/bot-config.json', 'utf8'));
-        this.bot = new TelegramBot(this.config.token, {
+        this.bot = new TelegramBot(botConfig.token, {
           polling: true
         });
-        this.chats = {};
-        this.provider = new QuizProvider();
+        this.handlers = {};
     }
 
-    _chatFactory(id) {
-        if (!this.chats[id]) {
-            this.chats[id] = new Chat(id, this.bot, this.provider);
+    _commandsHandlerFactory(id) {
+        if (!this.handlers[id]) {
+            this.handlers[id] = new CommandsHandler(id, this.bot, this.provider);
         }
 
-        return this.chats[id];
+        return this.handlers[id];
     }
 
     start() {
         this.bot.on('message', (msg) => {
-            var chat = this._chatFactory(msg.chat.id);
-            chat.handleMessage(msg);
+            let hander = this._commandsHandlerFactory(msg.chat.id);
+            hander.handleMessage(msg);
         });
     }
 }

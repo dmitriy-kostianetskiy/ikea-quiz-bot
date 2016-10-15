@@ -1,6 +1,25 @@
-var mongoose = require("mongoose");
+"use strict";
 
-mongoose.connect('mongodb://admin:admin@ds033996.mlab.com:33996/ikea-quiz-db');
-var db = mongoose.connection;
+let mongoose = require('mongoose'); 
+let botConfig = require('./../bot-config.js');
 
-module.exports = db;
+mongoose.connect(botConfig.db); 
+
+mongoose.connection.on('connected', function () {  
+  console.log('Mongoose default connection open to ' + botConfig.db);
+}); 
+
+mongoose.connection.on('error',function (err) {  
+  console.log('Mongoose default connection error: ' + err);
+}); 
+
+mongoose.connection.on('disconnected', function () {  
+  console.log('Mongoose default connection disconnected'); 
+});
+ 
+process.on('SIGINT', function() {  
+  mongoose.connection.close(function () { 
+    console.log('Mongoose default connection disconnected through app termination'); 
+    process.exit(0); 
+  }); 
+}); 

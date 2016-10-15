@@ -1,24 +1,25 @@
-var mongoose = require("mongoose");
+"use strict";
 
-mongoose.connect('mongodb://admin:admin@ds033996.mlab.com:33996/ikea-quiz-db');
-var db = mongoose.connection;
+let mongoose = require("mongoose");
+let random = require("./../utilities/random.js");
 
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var FurnitureSchema = new Schema({
+let FurnitureSchema = new Schema({
     name: { type: String, required: true},
     image: { type: String, required: true }
 }, { collection: 'furniture' });
 
-FurnitureSchema.statics.random = function() {
-  return this.count({}).then((count) => {
-        var rand = Math.floor(Math.random() * count);
-        return this.findOne().skip(rand);
-  });
+FurnitureSchema.statics.random = function(filter) {
+    filter = filter || {};
+        
+    return this
+        .count(filter)
+        .then((count) => {
+            return this.findOne().skip(random(count));
+        });
 };
 
-var FurnitureModel = mongoose.model('Furniture', FurnitureSchema);
-
-
+let FurnitureModel = mongoose.model('Furniture', FurnitureSchema);
 
 module.exports = FurnitureModel;
