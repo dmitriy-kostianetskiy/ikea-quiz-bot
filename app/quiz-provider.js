@@ -82,13 +82,20 @@ class QuizProvider{
                 
                 chat.count++;
                 
-                let isRight = chat.current === (answer - 1);
+                let result = { 
+                    isRight: chat.current === (answer - 1), 
+                    isFinished: chat.count >= botConfig.questionsCount, 
+                    right: chat.right,
+                    total: chat.count
+                };
                 
-                if (isRight){
+                if (result.isRight) {
                     chat.right++;
                 }
                 
-                return chat.save().then(() => { return isRight; });
+                var promise = result.isFinished ? chat.remove() : chat.save();
+                
+                return promise.then(() => { return result; });
             });
     }
 }

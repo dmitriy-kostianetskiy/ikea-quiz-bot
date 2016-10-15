@@ -46,6 +46,30 @@ class CommandsHandler {
     
     _handleStartCommand(msg) {
         var text = `Let's play ${msg.from.first_name}!`;
+        return this._startGame(text);
+    }
+    
+    _handleAnswer(msg) {
+        return this.provider
+            .submitAnswer(msg.text)
+            .then((data) => {
+                return this._sendMessage(data.isRight ? rightAnswerText : wrongAnswerText)
+                    .then(() => {
+                        if (data.isFinished){
+                            let text = `Game finished. Your result is ${data.right} out of ${data.total}. You sucker anyway. Do you want to play again?`;
+                            return this._startGame(text);
+                        } else{
+                            return this._question();
+                        }
+                    });
+            });
+    }
+    
+    _handleStartGame(msg) {
+        return this._question();
+    }
+    
+    _startGame(text){
         var options = {
             reply_markup: {
                 keyboard: [
@@ -57,23 +81,8 @@ class CommandsHandler {
         return this._sendMessage(text, options);
     }
     
-    _handleAnswer(msg) {
-        this.provider
-            .submitAnswer(msg.text)
-            .then((isRight) => {
-                this._sendMessage(isRight ? rightAnswerText : wrongAnswerText);
-            })
-            .then(() => { 
-                this._question();
-            });
-    }
-    
-    _handleStartGame(msg) {
-        return this._question();
-    }
-    
     _question() {
-         this.provider.getNext().then((question) => {
+         return this.provider.getNext().then((question) => {
             let options = {
                 reply_markup: {
                     keyboard: this._createAnswerKeyboard(question.answers)
@@ -100,12 +109,11 @@ class CommandsHandler {
                   if (err) return;
                   
                   this._sendPhoto(buffer);
-                })
+                });
             
             
             var t = this._sendMessage(text, options);
         });
-        
     }
     
     _createAnswerKeyboard(data){
