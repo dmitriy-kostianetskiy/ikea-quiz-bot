@@ -1,10 +1,7 @@
 "use strict";
 
-(function(){
+var bot = require('./app/bot.js');
+var server = require('./app/server.js');
 
-    var Bot = require('./app/bot.js');
-    
-    var bot = new Bot();
-    bot.start();
-    
-})();
+server.start();
+bot.start();

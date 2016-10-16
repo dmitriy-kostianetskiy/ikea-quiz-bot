@@ -1,7 +1,9 @@
 "use strict";
 
-let QuizProvider = require('./quiz-provider.js');
 let gm = require('gm');
+
+let QuizProvider = require('./quiz-provider.js');
+let botConfig = require("./bot-config.js");
 
 const rightAnswerText = 'You are right, sweety!';
 const wrongAnswerText = 'You are sucker!';
@@ -91,28 +93,18 @@ class CommandsHandler {
             
             let rightName = question.answers[question.rightAnswer].name;
             let text = `What the fuck is this: ${rightName}?`;
-
             
-            gm()
-                .in('-page', '+0+0')  // Custom place for each of the images
-                .in(question.answers[0].image)
-                .in('-page', '+256+0')
-                .in(question.answers[1].image)
-                .in('-page', '+0+256')
-                .in(question.answers[2].image)
-                .in('-page', '+256+256')
-                .in(question.answers[3].image)
-                .minify()  // Halves the size, 512x512 -> 256x256
-                .mosaic()  // Merges the images as a matrix
-                .toBuffer('PNG',(err, buffer) => {
-                  
-                  if (err) return;
-                  
-                  this._sendPhoto(buffer);
+            if (botConfig.debug){
+                question.answers.forEach(a => {
+                    text += '\n' + `name: ${a.name} category: ${a.category}`;
                 });
+            }
+   
             
-            
-            var t = this._sendMessage(text, options);
+            return this._sendMessage(text, options)
+                .then(() => { 
+                    this._sendPhoto(question.image);
+                });
         });
     }
     

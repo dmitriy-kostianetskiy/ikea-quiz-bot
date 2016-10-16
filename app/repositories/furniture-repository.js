@@ -7,7 +7,8 @@ let Schema = mongoose.Schema;
 
 let FurnitureSchema = new Schema({
     name: { type: String, required: true},
-    image: { type: String, required: true }
+    image: { type: String, required: true },
+    category: {type: String }
 }, { collection: 'furniture' });
 
 FurnitureSchema.statics.random = function(filter) {
@@ -16,7 +17,7 @@ FurnitureSchema.statics.random = function(filter) {
     return this
         .count(filter)
         .then((count) => {
-            return this.findOne().skip(random(count));
+            return this.findOne(filter).skip(random(count));
         });
 };
 

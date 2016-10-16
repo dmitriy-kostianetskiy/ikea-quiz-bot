@@ -2,6 +2,8 @@
 
 require("./repositories/connection.js");
 
+let gm = require('gm');
+
 let FurnitureModel = require("./repositories/furniture-repository.js");
 let ChatModel = require("./repositories/chat-repository.js");
 
@@ -30,10 +32,10 @@ class QuizProvider{
         return chat;
     }
     
-    _getRandom(result, exclude, counter){
+    _getRandom(result, counter, excludeCategory){
         
         result = result || [];
-        exclude = exclude || [];
+        excludeCategory = excludeCategory || [];
         counter = counter || 0;
         
         if (counter === botConfig.answersCount){
@@ -41,22 +43,47 @@ class QuizProvider{
         }
         
         return FurnitureModel
-            .random({id: { $nin: exclude }})
+            .random({category: { $nin: excludeCategory}})
             .then(x => {
-                exclude.push(x._id);
+                
+                excludeCategory.push(x.category);
+                
                 result.push(x);
                 
                 counter++;
                 
-                return this._getRandom(result, exclude, counter);
+                return this._getRandom(result, counter, excludeCategory);
             });
     }
     
+    _tileImage(answers){
+        return new Promise(function(resolve, reject) {
+            gm()
+                .in('-page', '+0+0')
+                .in(answers[0].image)
+                .in('-page', `+${botConfig.imageSize}+0`)
+                .in(answers[1].image)
+                .in('-page', `+0+${botConfig.imageSize}`)
+                .in(answers[2].image)
+                .in('-page', `+${botConfig.imageSize}+${botConfig.imageSize}`)
+                .in(answers[3].image)
+                .minify()
+                .mosaic()
+                .toBuffer('PNG', (error, buffer) => {
+                    if (error){
+                        reject(error);
+                    }
+                    
+                    resolve(buffer);
+                });
+        });
+    }
+    
     getNext() {
-        let exclude = [];
         let question = {
             rightAnswer: {},
-            answers: []
+            answers: [],
+            
         };
         
         return this._getRandom(question.answers)
@@ -66,11 +93,16 @@ class QuizProvider{
                 
                 question.rightAnswer = rightIndex;
                 
-                return this._getChat().then((chat) => {
-                    chat.current = rightIndex;
+                
+                return this._tileImage(question.answers).then(buffer => { 
+                    question.image = buffer;
                     
-                    return chat.save().then(() => {
-                        return question;
+                    return this._getChat().then((chat) => {
+                        chat.current = rightIndex;
+                        
+                        return chat.save().then(() => {
+                            return question;
+                        });
                     });
                 });
             });
