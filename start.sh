@@ -10,4 +10,4 @@ sudo apt-get install graphicsmagick
 #heroku config:set NODE_ENV=production --app your_app
 #heroku config:set HEROKU_URL=your_app_url --app your_app
 
-node index.jsgi
+node index.js
