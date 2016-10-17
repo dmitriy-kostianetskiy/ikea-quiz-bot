@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-sudo add-apt-repository ppa:dhor/myway -y
-sudo apt-get update
-sudo apt-get install graphicsmagick
+add-apt-repository ppa:dhor/myway -y
+apt-get update
+apt-get install graphicsmagick
 
-export $(cat .env.production | xargs) && node index.js
+#heroku configuration
+#heroku config:set TOKEN=your_token --app your_app
+#heroku config:set MONGO=your_mongo_db --app your_app
+#heroku config:set NODE_ENV=production --app your_app
+
+node index.js
