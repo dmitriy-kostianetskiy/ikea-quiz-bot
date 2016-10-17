@@ -38,6 +38,10 @@ class Bot {
             hander.handleMessage(msg);
         });
     }
+    
+    processUpdate(requestBody) {
+        this.bot.processUpdate(requestBody);
+    }
 }
 
 module.exports = new Bot();
