@@ -4,7 +4,7 @@ let express = require('express');
 var bodyParser = require('body-parser');
 
 let packageInfo = require('./../package.json');
-var config = require('./../config.json');
+var config = require('./../config.js');
 
 class Server {
     start(bot){
