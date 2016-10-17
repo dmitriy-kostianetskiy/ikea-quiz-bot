@@ -7,8 +7,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "set_env": "export $(cat .env | xargs)",
-    "start": "./start.sh"
+    "start": "./start.sh",
+    "start.debug": "./start.debug.sh"
   },
   "repository": {
     "type": "git",
