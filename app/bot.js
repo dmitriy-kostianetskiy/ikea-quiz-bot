@@ -30,7 +30,7 @@ class Bot {
             this.bot = new TelegramBot(config.token); 
             this.bot.setWebHook(config.herokuUrl + this.bot.token);
             
-            console.log(`Telegram bot started in release mode`);
+            console.log(`Telegram bot started in release mode at ${config.herokuUrl}`);
         }
         
         this.bot.on('message', (msg) => {
