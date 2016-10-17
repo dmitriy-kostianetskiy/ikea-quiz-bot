@@ -28,6 +28,7 @@ Run following script within the Heroku CLI.
 heroku config:set TOKEN=your_token --app your_app
 heroku config:set MONGO=your_mongo_db --app your_app
 heroku config:set NODE_ENV=production --app your_app
+heroku config:set HEROKU_URL=$(heroku info --app your_app  -s | grep web-url | cut -d= -f2) --app your_app
 ```
 
 Then just run `npm`.
