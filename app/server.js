@@ -15,6 +15,8 @@ class Server {
         });
         
         app.post('/' + bot.token, function (req, res) {
+            console.log(`Request recieved req: ${req.body}, res: ${res}`);
+           
             bot.processUpdate(req.body);
             res.sendStatus(200);
         });
