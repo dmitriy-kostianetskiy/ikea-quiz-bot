@@ -5,9 +5,10 @@
   "engines": {
     "node": "4.5.0"
   },
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "set_env": "export $(cat .env | xargs)",
+    "start": "./start.sh"
   },
   "repository": {
     "type": "git",

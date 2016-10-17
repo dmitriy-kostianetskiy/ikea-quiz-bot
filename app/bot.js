@@ -28,7 +28,7 @@ class Bot {
             console.log(`Telegram bot started in debug mode`);
         } else {
             this.bot = new TelegramBot(config.token); 
-            this.bot.setWebHook(process.env.HEROKU_URL + this.bot.token);
+            this.bot.setWebHook(config.herokuUrl + this.bot.token);
             
             console.log(`Telegram bot started in release mode`);
         }
