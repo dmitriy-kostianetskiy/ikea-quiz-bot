@@ -17,13 +17,11 @@ class Server {
         });
         
         app.post('/' + config.token, function (req, res) {
-            console.log(`Request recieved req: ${req.body}, res: ${res}`);
-           
             bot.processUpdate(req.body);
             res.sendStatus(200);
         });
         
-        var server = app.listen(process.env.PORT || 5000, function () {
+        var server = app.listen(config.port, function () {
             var host = server.address().address;
             var port = server.address().port;
             console.log('Web server started at http://%s:%s', host, port);

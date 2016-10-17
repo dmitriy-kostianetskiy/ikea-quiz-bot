@@ -7,7 +7,8 @@ var config = {
     questionsCount: 10,
     imageSize: 256,
     debug: process.env.NODE_ENV !== 'production',
-    herokuUrl: process.env.HEROKU_URL || "0.0.0.0"
+    herokuUrl: process.env.HEROKU_URL || "0.0.0.0",
+    port: process.env.PORT || 80
 };
 
 module.exports = config;
