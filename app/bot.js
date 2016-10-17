@@ -2,16 +2,12 @@
 
 let TelegramBot = require('node-telegram-bot-api');
 
-
 let CommandsHandler = require('./commands-handler.js');
-let botConfig = require('./bot-config.js');
+let config = require('./../config.js');
 
 class Bot {
     
     constructor() {
-        this.bot = new TelegramBot(botConfig.token, {
-          polling: true
-        });
         this.handlers = {};
     }
 
@@ -24,6 +20,19 @@ class Bot {
     }
 
     start() {
+        if(config.debug) {
+            this.bot = new TelegramBot(config.token, {
+                polling: true
+            }); 
+            
+            console.log(`Telegram bot started in debug mode`);
+        } else {
+            this.bot = new TelegramBot(config.token); 
+            this.bot.setWebHook(process.env.HEROKU_URL + this.bot.token);
+            
+            console.log(`Telegram bot started in release mode`);
+        }
+        
         this.bot.on('message', (msg) => {
             let hander = this._commandsHandlerFactory(msg.chat.id);
             hander.handleMessage(msg);

@@ -1,12 +1,12 @@
 "use strict";
 
 let mongoose = require('mongoose'); 
-let botConfig = require('./../bot-config.js');
+let config = require('./../config.js');
 
-mongoose.connect(botConfig.db); 
+mongoose.connect(config.db); 
 
 mongoose.connection.on('connected', function () {  
-  console.log('Mongoose default connection open to ' + botConfig.db);
+  console.log('Mongoose default connection open to ' + config.db);
 }); 
 
 mongoose.connection.on('error',function (err) {  

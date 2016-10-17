@@ -3,7 +3,7 @@
 let gm = require('gm');
 
 let QuizProvider = require('./quiz-provider.js');
-let botConfig = require("./bot-config.js");
+let config = require("./../config.js");
 
 const rightAnswerText = 'You are right, sweety!';
 const wrongAnswerText = 'You are sucker!';
@@ -94,12 +94,11 @@ class CommandsHandler {
             let rightName = question.answers[question.rightAnswer].name;
             let text = `What the fuck is this: ${rightName}?`;
             
-            if (botConfig.debug){
+            if (config.debug) {
                 question.answers.forEach(a => {
                     text += '\n' + `name: ${a.name} category: ${a.category}`;
                 });
             }
-   
             
             return this._sendMessage(text, options)
                 .then(() => { 

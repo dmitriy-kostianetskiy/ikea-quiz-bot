@@ -1,14 +1,14 @@
 "use strict";
 
-require("./repositories/connection.js");
 
 let gm = require('gm');
 
-let FurnitureModel = require("./repositories/furniture-repository.js");
-let ChatModel = require("./repositories/chat-repository.js");
+require("./connection.js");
+let FurnitureModel = require("./models/furniture-model.js");
+let ChatModel = require("./models/chat-model.js");
 
 let random = require("./utilities/random.js");
-let botConfig = require("./bot-config.js");
+let config = require("./../config.js");
 
 class QuizProvider{
     constructor(chatId){
@@ -38,7 +38,7 @@ class QuizProvider{
         excludeCategory = excludeCategory || [];
         counter = counter || 0;
         
-        if (counter === botConfig.answersCount){
+        if (counter === config.answersCount){
             return;
         }
         
@@ -61,11 +61,11 @@ class QuizProvider{
             gm()
                 .in('-page', '+0+0')
                 .in(answers[0].image)
-                .in('-page', `+${botConfig.imageSize}+0`)
+                .in('-page', `+${config.imageSize}+0`)
                 .in(answers[1].image)
-                .in('-page', `+0+${botConfig.imageSize}`)
+                .in('-page', `+0+${config.imageSize}`)
                 .in(answers[2].image)
-                .in('-page', `+${botConfig.imageSize}+${botConfig.imageSize}`)
+                .in('-page', `+${config.imageSize}+${config.imageSize}`)
                 .in(answers[3].image)
                 .minify()
                 .mosaic()
@@ -116,7 +116,7 @@ class QuizProvider{
                 
                 let result = { 
                     isRight: chat.current === (answer - 1), 
-                    isFinished: chat.count >= botConfig.questionsCount, 
+                    isFinished: chat.count >= config.questionsCount, 
                     right: chat.right,
                     total: chat.count
                 };
