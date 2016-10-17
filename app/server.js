@@ -16,7 +16,7 @@ class Server {
             res.json({ version: packageInfo.version });
         });
         
-        app.post('/' + bot.token, function (req, res) {
+        app.post('/' + config.token, function (req, res) {
             console.log(`Request recieved req: ${req.body}, res: ${res}`);
            
             bot.processUpdate(req.body);
