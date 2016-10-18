@@ -1,5 +1,5 @@
 {
-  "name": "ikea-game-bot",
+  "name": "ikea-quiz-bot",
   "version": "1.0.0",
   "description": "",
   "engines": {
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/redrick-tmn/ikea-game-bot.git"
+    "url": "git+https://github.com/redrick-tmn/ikea-quiz-bot.git"
   },
   "author": "",
   "license": "",
   "bugs": {
-    "url": "https://github.com/redrick-tmn/ikea-game-bot/issues"
+    "url": "https://github.com/redrick-tmn/ikea-quiz-bot/issues"
   },
-  "homepage": "https://github.com/redrick-tmn/ikea-game-bot#readme",
+  "homepage": "https://github.com/redrick-tmn/ikea-quiz-bot#readme",
   "dependencies": {
     "mongoose": "4.6.3",
     "node-telegram-bot-api": "0.23.3",
