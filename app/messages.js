@@ -2,7 +2,7 @@
 
 let random = require('./utilities/random.js');
 
-let rightAnswers = ['You got right! \u{1f389}', 'Congratulations! \u{1f44b}', 'It was easy! Isn\'t it? \u{1f37b}', 'Cool! You\'re rocky! \u{1f3cb}' ];
+let rightAnswers = ['You got that right! \u{1f389}', 'Congratulations! \u{1f44b}', 'It was easy! Wasn\'t it? \u{1f37b}', 'Cool! You\'re rocky! \u{1f3cb}' ];
 let wrongAnswers = ['It was so close! \u{0274c}', 'Not quite! \u{1f44e}', 'That\'s wrong! \u{1f641}', 'Oh no! Fail! Don\'t give up! \u{1f610}', ];
 
 let rightAnswerMessage = () => { return rightAnswers[random(rightAnswers.length)]; };
@@ -39,7 +39,7 @@ let gameFinishedMessage = (right, total) => {
     return leftPad + `Game finished. Your result is ${right} out of ${total}.` + rightPad;
 };
 
-let questionMessage = (name) => { return `What the *${name}* is?` };
+let questionMessage = (name) => { return `What is *${name}*?` };
 let startGameMessage = (userName) => {
     return `Let's start a new game ${userName}! 
 I will ask you 10 questions. 
