@@ -2,7 +2,6 @@
 
 let gm = require('gm');
 
-require("./connection.js");
 let FurnitureModel = require("./models/furniture-model.js");
 let ChatModel = require("./models/chat-model.js");
 
@@ -10,18 +9,20 @@ let random = require("./utilities/random.js");
 let config = require("./../config.js");
 
 class QuizProvider{
-    constructor(chatId){
+    constructor(chatId, userName) {
         this.chatId = chatId;
+        this.userName = userName;
     }
     
     _getChat() {
-        let query = { telegramChatId: this.chatId },
+        let query = { telegramChatId: this.chatId, completed: false },
             update = {
                 $setOnInsert: { 
                     telegramChatId: this.chatId, 
                     current: null, 
                     right: 0, 
-                    count: 0 
+                    count: 0,
+                    userName: this.userName
                 }
             },
             options = { upsert: true, new: true, setDefaultsOnInsert: true };
@@ -106,9 +107,10 @@ class QuizProvider{
             });
     }
     
-    reset() {
+    finish() {
         return this._getChat().then(chat => {
-            return chat.remove();
+            chat.completed = true;
+            return chat.save();
         });
     }
     

@@ -2,21 +2,14 @@
 
 let TelegramBot = require('node-telegram-bot-api');
 
-let CommandsHandler = require('./commands-handler.js');
+let QuizProvider = require("./quiz-provider.js")
+let handleCommands = require('./message-handler.js');
 let config = require('./../config.js');
 
 class Bot {
     
     constructor() {
         this.handlers = {};
-    }
-
-    _commandsHandlerFactory(id) {
-        if (!this.handlers[id]) {
-            this.handlers[id] = new CommandsHandler(id, this.bot, this.provider);
-        }
-
-        return this.handlers[id];
     }
 
     start() {
@@ -33,9 +26,9 @@ class Bot {
             console.log(`Telegram bot started in release mode at ${config.herokuUrl}`);
         }
         
-        this.bot.on('message', (msg) => {
-            let hander = this._commandsHandlerFactory(msg.chat.id);
-            hander.handleMessage(msg);
+        this.bot.on('message', msg => {
+            let provider = new QuizProvider(msg.chat.id, msg.from.first_name);
+            handleCommands(msg, this.bot, provider);
         });
     }
     

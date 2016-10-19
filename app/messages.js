@@ -41,9 +41,9 @@ let gameFinishedMessage = (right, total) => {
 
 let questionMessage = (name) => { return `What is *${name}*?` };
 let startGameMessage = (userName) => {
-    return `Let's start a new game ${userName}! 
-I will ask you 10 questions. 
-Hit "Start Game!" if you're ready!`;
+    return `\u{1f389}\u{1f389} Let's start a new game ${userName}! \u{1f389}\u{1f389} 
+I will ask you \u{1f51f} questions. 
+Hit "Start Game!" if you're ready! \u{1f52e}\u{1f3ae}`;
 };
         
         
