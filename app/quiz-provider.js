@@ -1,6 +1,5 @@
 "use strict";
 
-
 let gm = require('gm');
 
 require("./connection.js");
@@ -67,7 +66,6 @@ class QuizProvider{
                 .in(answers[2].image)
                 .in('-page', `+${config.imageSize}+${config.imageSize}`)
                 .in(answers[3].image)
-                .minify()
                 .mosaic()
                 .toBuffer('PNG', (error, buffer) => {
                     if (error){
@@ -89,7 +87,7 @@ class QuizProvider{
         return this._getRandom(question.answers)
             .then(() => {
                 
-                var rightIndex = random(question.answers.length);
+                let rightIndex = random(question.answers.length);
                 
                 question.rightAnswer = rightIndex;
                 
@@ -108,6 +106,12 @@ class QuizProvider{
             });
     }
     
+    reset() {
+        return this._getChat().then(chat => {
+            return chat.remove();
+        });
+    }
+    
     submitAnswer(answer) {
         return this._getChat()
             .then(chat => {
@@ -124,10 +128,8 @@ class QuizProvider{
                 if (result.isRight) {
                     chat.right++;
                 }
-                
-                var promise = result.isFinished ? chat.remove() : chat.save();
-                
-                return promise.then(() => { return result; });
+
+                return chat.save().then(() => { return result; });
             });
     }
 }

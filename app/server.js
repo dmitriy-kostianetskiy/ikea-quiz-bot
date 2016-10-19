@@ -1,29 +1,25 @@
 "use strict";
 
 let express = require('express');
-var bodyParser = require('body-parser');
+let bodyParser = require('body-parser');
 
 let packageInfo = require('./../package.json');
-var config = require('./../config.js');
+let config = require('./../config.js');
 
 class Server {
     start(bot){
-        var app = express();
+        let app = express();
         
         app.use(bodyParser.json());
-        
-        app.get('/', function (req, res) {
-            res.json({ version: packageInfo.version });
-        });
-        
+
         app.post('/' + config.token, function (req, res) {
             bot.processUpdate(req.body);
             res.sendStatus(200);
         });
         
-        var server = app.listen(config.port, function () {
-            var host = server.address().address;
-            var port = server.address().port;
+        let server = app.listen(config.port, function () {
+            let host = server.address().address;
+            let port = server.address().port;
             console.log('Web server started at http://%s:%s', host, port);
         });
     }

@@ -4,10 +4,7 @@ let gm = require('gm');
 
 let QuizProvider = require('./quiz-provider.js');
 let config = require("./../config.js");
-
-const rightAnswerText = 'You are right, sweety!';
-const wrongAnswerText = 'You are sucker!';
-const helpText = 'Heeelp! I need somebody!';
+let messages = require('./messages.js');
 
 class CommandsHandler {
 
@@ -43,23 +40,21 @@ class CommandsHandler {
     }
 
     _handleHelpCommand(msg) {
-        return this._sendMessage(helpText);
+        return this._sendMessage(messages.helpMessage());
     }
     
     _handleStartCommand(msg) {
-        var text = `Let's play ${msg.from.first_name}!`;
-        return this._startGame(text);
+        return this._startGame(messages.startGameMessage(msg.from.first_name));
     }
     
     _handleAnswer(msg) {
         return this.provider
             .submitAnswer(msg.text)
             .then((data) => {
-                return this._sendMessage(data.isRight ? rightAnswerText : wrongAnswerText)
+                return this._sendMessage(data.isRight ? messages.rightAnswerMessage() : messages.wrongAnswerMessage())
                     .then(() => {
                         if (data.isFinished){
-                            let text = `Game finished. Your result is ${data.right} out of ${data.total}. You sucker anyway. Do you want to play again?`;
-                            return this._startGame(text);
+                            return this._finishGame(data.right, data.total);
                         } else{
                             return this._question();
                         }
@@ -71,28 +66,39 @@ class CommandsHandler {
         return this._question();
     }
     
+    _finishGame(right, total){
+        let text = messages.gameFinishedMessage(right, total);
+        
+        return this._startGame(text);
+    }
+    
     _startGame(text){
-        var options = {
+        let options = {
             reply_markup: {
+                resize_keyboard: true,
                 keyboard: [
                     [{text: "Start Game!"}]
                 ]
             }
         };
 
-        return this._sendMessage(text, options);
+        return this.provider.reset().then(() => {
+            return this._sendMessage(text, options);
+        });
     }
     
     _question() {
          return this.provider.getNext().then((question) => {
             let options = {
                 reply_markup: {
+                    resize_keyboard: true,
                     keyboard: this._createAnswerKeyboard(question.answers)
-                }
+                },
+                parse_mode: "Markdown"
             };
             
             let rightName = question.answers[question.rightAnswer].name;
-            let text = `What the fuck is this: ${rightName}?`;
+            let text = messages.questionMessage(rightName);
             
             if (config.debug) {
                 question.answers.forEach(a => {
@@ -108,8 +114,8 @@ class CommandsHandler {
     }
     
     _createAnswerKeyboard(data){
-        var result = [];
-        var item = [];
+        let result = [];
+        let item = [];
         
         for (let i=0;i<data.length;i++){
             if (item.length === 2) {
