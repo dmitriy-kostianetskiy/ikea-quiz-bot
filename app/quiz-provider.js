@@ -117,13 +117,14 @@ class QuizProvider{
             .then(chat => {
                 
                 chat.count++;
-                                
-                if (result.isRight) {
+                     
+                let isRight = chat.current === (answer - 1);           
+                if (isRight) {
                     chat.right++;
                 }
 
                 let result = { 
-                    isRight: chat.current === (answer - 1), 
+                    isRight: isRight, 
                     isFinished: chat.count >= config.questionsCount, 
                     right: chat.right,
                     total: chat.count
