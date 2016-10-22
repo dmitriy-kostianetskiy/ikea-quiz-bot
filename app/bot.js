@@ -23,7 +23,7 @@ class Bot {
         }
         
         this.bot.on('message', msg => {
-            let provider = new QuizProvider(msg.chat.id, msg.from);
+            let provider = new QuizProvider(msg.chat.id, msg.from.first_name);
             handleCommands(msg, this.bot, provider);
         });
         

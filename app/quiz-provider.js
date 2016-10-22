@@ -12,7 +12,6 @@ class QuizProvider{
     constructor(chatId, userName) {
         this.chatId = chatId;
         this.userName = userName;
-
     }
     
     _getChat() {
@@ -102,7 +101,7 @@ class QuizProvider{
                         
                         return chat.save().then(() => {
                             return question;
-                        });
+                        }, (err) => { console.log(err); });
                     });
                 });
             });

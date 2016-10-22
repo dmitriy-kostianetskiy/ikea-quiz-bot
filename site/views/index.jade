@@ -1,0 +1,23 @@
+extends layout
+
+block content
+	.container
+		.row
+			.col-lg-4.col-lg-offset-2
+				h2.text-center General
+				table.table.table-striped.table-hover
+					tbody
+						tr
+							td Total games played
+							td #{viewModel.totalGamePlayed}
+						tr
+							td Unique players
+							td #{viewModel.uniquePlayers}
+			.col-lg-4
+				h2.text-center Top players
+				table.table.table-striped.table-hover
+					tbody
+						each player in viewModel.players
+							tr
+								td #{player.name}
+								td #{player.score}
