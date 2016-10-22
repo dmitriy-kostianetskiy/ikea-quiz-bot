@@ -2,16 +2,17 @@
 
 let gm = require('gm');
 
-let FurnitureModel = require("./models/furniture-model.js");
-let ChatModel = require("./models/chat-model.js");
+let FurnitureModel = require("./../storage/models/furniture-model.js");
+let ChatModel = require("./../storage/models/chat-model.js");
 
-let random = require("./utilities/random.js");
+let random = require("./../utilities/random.js");
 let config = require("./../config.js");
 
 class QuizProvider{
     constructor(chatId, userName) {
         this.chatId = chatId;
         this.userName = userName;
+
     }
     
     _getChat() {
@@ -22,13 +23,13 @@ class QuizProvider{
                     current: null, 
                     right: 0, 
                     count: 0,
-                    userName: this.userName
+                    userName: this.userName,
+                    started: new Date()
                 }
             },
             options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
         let chat = ChatModel.findOneAndUpdate(query, update, options);
-    
         return chat;
     }
     
@@ -110,6 +111,7 @@ class QuizProvider{
     finish() {
         return this._getChat().then(chat => {
             chat.completed = true;
+            chat.finished = new Date();
             return chat.save();
         });
     }

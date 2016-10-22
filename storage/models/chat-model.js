@@ -11,6 +11,8 @@ let ChatSchema = new Schema({
     count: { type: Number, required: false},
     completed: { type: Boolean, required: false},
     userName: { type: String, required: false},
+    started: {type: Date, required: false},
+    finished: {type: Date, required: false},
 }, { collection: 'chat' });
 
 let ChatModel = mongoose.model('Chat', ChatSchema);

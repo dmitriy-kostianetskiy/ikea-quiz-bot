@@ -1,8 +1,8 @@
 "use strict";
 
-require("./app/connection.js");
-let bot = require('./app/bot.js');
-let server = require('./app/server.js');
+require("./storage/connection.js");
+let Bot = require('./app/bot.js');
+let Server = require('./server/server.js');
 
-bot.start();
-server.start(bot);
+let server = new Server();
+let bot = new Bot(server);

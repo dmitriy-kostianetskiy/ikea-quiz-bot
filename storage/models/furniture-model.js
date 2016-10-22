@@ -1,7 +1,7 @@
 "use strict";
 
 let mongoose = require("mongoose");
-let random = require("./../utilities/random.js");
+let random = require("./../../utilities/random.js");
 
 let Schema = mongoose.Schema;
 

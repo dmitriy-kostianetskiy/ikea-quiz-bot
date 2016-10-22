@@ -1,18 +1,14 @@
 "use strict";
 
 let TelegramBot = require('node-telegram-bot-api');
+let bodyParser = require('body-parser');
 
-let QuizProvider = require("./quiz-provider.js")
+let QuizProvider = require("./quiz-provider.js");
 let handleCommands = require('./message-handler.js');
 let config = require('./../config.js');
 
 class Bot {
-    
-    constructor() {
-        this.handlers = {};
-    }
-
-    start() {
+    constructor(server) {
         if(config.debug) {
             this.bot = new TelegramBot(config.token, {
                 polling: true
@@ -27,14 +23,17 @@ class Bot {
         }
         
         this.bot.on('message', msg => {
-            let provider = new QuizProvider(msg.chat.id, msg.from.first_name);
+            let provider = new QuizProvider(msg.chat.id, msg.from);
             handleCommands(msg, this.bot, provider);
         });
-    }
-    
-    processUpdate(requestBody) {
-        this.bot.processUpdate(requestBody);
+        
+        server.app.use(bodyParser.json());
+        
+        server.app.post('/' + config.token, (req, res) => {
+            this.bot.processUpdate(req.body);
+            res.sendStatus(200);
+        });
     }
 }
 
-module.exports = new Bot();
+module.exports = Bot;
