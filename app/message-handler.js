@@ -107,19 +107,24 @@ let handleMessage = function(msg, bot, provider) {
         return result;
     };
     
+    let promise = null;
     switch (msg.text){
         case '/start':
-            _handleStartCommand(msg);
+            promise = _handleStartCommand(msg);
             break;
         case '/help':
-            _handleHelpCommand(msg);
+            promise = _handleHelpCommand(msg);
             break;
         case 'Start Game!':
-            _handleStartGame(msg);
+            promise = _handleStartGame(msg);
             break;
         default:
-            _handleAnswer(msg);
+            promise = _handleAnswer(msg);
             break;
+    }
+    
+    if (promise && promise.then) {
+        promise.catch((err) => { console.log(err); });
     }
 };
 
