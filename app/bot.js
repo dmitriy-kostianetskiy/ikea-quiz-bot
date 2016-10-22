@@ -18,20 +18,19 @@ class Bot {
         } else {
             this.bot = new TelegramBot(config.token); 
             this.bot.setWebHook(config.herokuUrl + this.bot.token);
+                    
+            server.app.use(bodyParser.json());
             
+            server.app.post('/' + config.token, (req, res) => {
+                this.bot.processUpdate(req.body);
+                res.sendStatus(200);
+            });
             console.log(`Telegram bot started in release mode at ${config.herokuUrl}`);
         }
         
         this.bot.on('message', msg => {
             let provider = new QuizProvider(msg.chat.id, msg.from.first_name);
             handleCommands(msg, this.bot, provider);
-        });
-        
-        server.app.use(bodyParser.json());
-        
-        server.app.post('/' + config.token, (req, res) => {
-            this.bot.processUpdate(req.body);
-            res.sendStatus(200);
         });
     }
 }

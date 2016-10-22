@@ -3,11 +3,10 @@
 var express = require('express');
 var path = require('path');
 //var favicon = require('serve-favicon');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var indexRoutes = require('./routes/index');
 
 class Site {
     constructor(server) {
@@ -18,15 +17,15 @@ class Site {
 
         // uncomment after placing your favicon in /public
         //server.app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-        server.app.use(logger('dev'));
-        server.app.use(bodyParser.json());
+
         server.app.use(bodyParser.urlencoded({
             extended: false
         }));
+        
         server.app.use(cookieParser());
         server.app.use(express.static(path.join(__dirname, 'public')));
 
-        server.app.use('/', routes);
+        indexRoutes(server);
 
         // catch 404 and forward to error handler
         server.app.use(function(req, res, next) {
