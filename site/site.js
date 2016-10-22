@@ -12,8 +12,8 @@ class Site {
     constructor(server) {
 
         // view engine setup
-        //server.app.set('views', path.join(__dirname, 'views'));
-        //server.app.set('view engine', 'jade');
+        server.app.set('views', path.join(__dirname, 'views'));
+        server.app.set('view engine', 'jade');
 
         // uncomment after placing your favicon in /public
         //server.app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -25,7 +25,7 @@ class Site {
         //server.app.use(cookieParser());
         server.app.use(express.static(path.join(__dirname, 'public')));
 
-        //indexRoutes(server);
+        indexRoutes(server);
 
         // catch 404 and forward to error handler
         // server.app.use(function(req, res, next) {
