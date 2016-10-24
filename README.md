@@ -33,3 +33,9 @@ Then just run `npm`.
 ```bash
 npm run start
 ```
+
+##Links
+
+* Telegram Bot Store: https://storebot.me/bot/ikeaquizbot
+* Direct link: https://telegram.me/IkeaQuizBot
+* Statistics: https://ikea-quiz-bot.herokuapp.com/
