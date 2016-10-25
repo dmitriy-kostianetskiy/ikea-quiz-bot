@@ -8,55 +8,70 @@ let ChatModel = require("./../storage/models/chat-model.js");
 let random = require("./../utilities/random.js");
 let config = require("./../config.js");
 
-class QuizProvider{
+class QuizProvider {
     constructor(chatId, userName) {
         this.chatId = chatId;
         this.userName = userName;
     }
-    
+
     _getChat() {
-        let query = { telegramChatId: this.chatId, completed: false },
+        let query = {
+                telegramChatId: this.chatId,
+                completed: false
+            },
             update = {
-                $setOnInsert: { 
-                    telegramChatId: this.chatId, 
-                    current: null, 
-                    right: 0, 
+                $setOnInsert: {
+                    telegramChatId: this.chatId,
+                    current: null,
+                    right: 0,
                     count: 0,
                     userName: this.userName,
                     started: new Date()
                 }
             },
-            options = { upsert: true, new: true, setDefaultsOnInsert: true };
+            options = {
+                upsert: true,
+                new: true,
+                setDefaultsOnInsert: true
+            };
 
         let chat = ChatModel.findOneAndUpdate(query, update, options);
         return chat;
     }
-    
-    _getRandom(result, counter, excludeCategory){
-        
+
+    _getRandom(result, options) {
         result = result || [];
-        excludeCategory = excludeCategory || [];
-        counter = counter || 0;
-        
-        if (counter === config.answersCount){
+
+        options.excludeCategory = options.excludeCategory || [];
+        options.previous = options.previous || [];
+        options.counter = options.counter || 0;
+
+        if (options.counter === config.answersCount) {
             return;
         }
-        
+
         return FurnitureModel
-            .random({category: { $nin: excludeCategory}})
+            .random({
+                category: {
+                    $nin: options.excludeCategory
+                },
+                name: {
+                    $nin: options.previous
+                }
+            })
             .then(x => {
-                
-                excludeCategory.push(x.category);
-                
+
+                options.excludeCategory.push(x.category);
+
                 result.push(x);
-                
-                counter++;
-                
-                return this._getRandom(result, counter, excludeCategory);
+
+                options.counter++;
+
+                return this._getRandom(result, options);
             });
     }
-    
-    _tileImage(answers){
+
+    _tileImage(answers) {
         return new Promise(function(resolve, reject) {
             gm()
                 .in('-page', '+0+0')
@@ -69,44 +84,42 @@ class QuizProvider{
                 .in(answers[3].image)
                 .mosaic()
                 .toBuffer('PNG', (error, buffer) => {
-                    if (error){
+                    if (error) {
                         reject(error);
                     }
-                    
+
                     resolve(buffer);
                 });
         });
     }
-    
+
     getNext() {
         let question = {
             rightAnswer: {},
-            answers: [],
-            
+            answers: []
         };
-        
-        return this._getRandom(question.answers)
-            .then(() => {
-                
-                let rightIndex = random(question.answers.length);
-                
-                question.rightAnswer = rightIndex;
-                
-                
-                return this._tileImage(question.answers).then(buffer => { 
-                    question.image = buffer;
+
+        return this._getChat().then((chat) => {
+            return this._getRandom(question.answers, { previous: chat.previous })
+                .then(() => {
                     
-                    return this._getChat().then((chat) => {
-                        chat.current = rightIndex;
-                        
+                    let rightIndex = random(question.answers.length);
+                    question.rightAnswer = rightIndex;
+                    
+                    chat.current = rightIndex;
+                    chat.previous = chat.previous || [];
+                    chat.previous.push(question.answers[rightIndex].name);
+                    
+                    return this._tileImage(question.answers).then(buffer => {
+                        question.image = buffer;
                         return chat.save().then(() => {
                             return question;
-                        }, (err) => { console.log(err); });
+                        });
                     });
                 });
-            });
+        });
     }
-    
+
     finish() {
         return this._getChat().then(chat => {
             chat.completed = true;
@@ -114,26 +127,28 @@ class QuizProvider{
             return chat.save();
         });
     }
-    
+
     submitAnswer(answer) {
         return this._getChat()
             .then(chat => {
-                
+
                 chat.count++;
-                     
-                let isRight = chat.current === (answer - 1);           
+
+                let isRight = chat.current === (answer - 1);
                 if (isRight) {
                     chat.right++;
                 }
 
-                let result = { 
-                    isRight: isRight, 
-                    isFinished: chat.count >= config.questionsCount, 
+                let result = {
+                    isRight: isRight,
+                    isFinished: chat.count >= config.questionsCount,
                     right: chat.right,
                     total: chat.count
                 };
 
-                return chat.save().then(() => { return result; });
+                return chat.save().then(() => {
+                    return result;
+                });
             });
     }
 }

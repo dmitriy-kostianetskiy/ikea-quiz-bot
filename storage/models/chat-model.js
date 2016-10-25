@@ -13,6 +13,7 @@ let ChatSchema = new Schema({
     userName: { type: String, required: false},
     started: {type: Date, required: false},
     finished: {type: Date, required: false},
+    previous: {type: Array, required: false}
 }, { collection: 'chat' });
 
 let ChatModel = mongoose.model('Chat', ChatSchema);
