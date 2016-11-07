@@ -25,6 +25,10 @@ let handleMessage = function(msg, bot, provider) {
         return provider
             .submitAnswer(msg.text)
             .then((data) => {
+                if (data.isSkip){
+                    return;
+                }
+                
                 return _sendMessage(data.isRight ? messages.rightAnswerMessage() : messages.wrongAnswerMessage())
                     .then(() => {
                         if (data.isFinished){

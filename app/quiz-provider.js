@@ -131,7 +131,12 @@ class QuizProvider {
     submitAnswer(answer) {
         return this._getChat()
             .then(chat => {
-
+                if (chat.count >= 10){
+                    return {
+                        isSkip: true
+                    };
+                }
+                
                 chat.count++;
 
                 let isRight = chat.current === (answer - 1);
