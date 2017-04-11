@@ -34,7 +34,7 @@ Then just run `npm`.
 npm run start
 ```
 
-##Links
+## Links
 
 * Telegram Bot Store: https://storebot.me/bot/ikeaquizbot
 * Direct link: https://telegram.me/IkeaQuizBot
