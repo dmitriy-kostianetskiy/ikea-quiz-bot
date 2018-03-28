@@ -1,12 +1,26 @@
 "use strict";
 
-let gm = require('gm');
+const gm = require('gm').subClass({imageMagick: true})
 
 let FurnitureModel = require("./../storage/models/furniture-model.js");
 let ChatModel = require("./../storage/models/chat-model.js");
 
 let random = require("./../utilities/random.js");
 let config = require("./../config.js");
+
+function gmToBuffer (data) {
+    return new Promise((resolve, reject) => {
+      data.stream((err, stdout, stderr) => {
+        if (err) { return reject(err) }
+        const chunks = []
+        stdout.on('data', (chunk) => { chunks.push(chunk) })
+        // these are 'once' because they can and do fire multiple times for multiple errors,
+        // but this is a promise so you'll have to deal with them one at a time
+        stdout.once('end', () => { resolve(Buffer.concat(chunks)) })
+        stderr.once('data', (data) => { reject(String(data)) })
+      })
+    })
+  }
 
 class QuizProvider {
     constructor(chatId, userName) {
@@ -72,24 +86,28 @@ class QuizProvider {
     }
 
     _tileImage(answers) {
-        return new Promise(function(resolve, reject) {
-            gm()
-                .in('-page', '+0+0')
-                .in(answers[0].image)
-                .in('-page', `+${config.imageSize}+0`)
-                .in(answers[1].image)
-                .in('-page', `+0+${config.imageSize}`)
-                .in(answers[2].image)
-                .in('-page', `+${config.imageSize}+${config.imageSize}`)
-                .in(answers[3].image)
-                .mosaic()
-                .toBuffer('PNG', (error, buffer) => {
-                    if (error) {
-                        reject(error);
-                    }
+        const data = gm()
+        .in('-page', '+0+0')
+        .in(answers[0].image)
+        .in('-page', `+${config.imageSize}+0`)
+        .in(answers[1].image)
+        .in('-page', `+0+${config.imageSize}`)
+        .in(answers[2].image)
+        .in('-page', `+${config.imageSize}+${config.imageSize}`)
+        .in(answers[3].image)
+        .mosaic()
+        .setFormat('png');
 
-                    resolve(buffer);
-                });
+        return new Promise((resolve, reject) => {
+            data.stream((err, stdout, stderr) => {
+                if (err) { return reject(err) }
+                const chunks = []
+                stdout.on('data', (chunk) => { chunks.push(chunk) })
+                // these are 'once' because they can and do fire multiple times for multiple errors,
+                // but this is a promise so you'll have to deal with them one at a time
+                stdout.once('end', () => { resolve(Buffer.concat(chunks)) })
+                stderr.once('data', (data) => { reject(String(data)) })
+            })
         });
     }
 
@@ -110,7 +128,9 @@ class QuizProvider {
                     chat.previous = chat.previous || [];
                     chat.previous.push(question.answers[rightIndex].name);
                     
-                    return this._tileImage(question.answers).then(buffer => {
+                    const r = this._tileImage(question.answers);
+
+                    return r.then(buffer => {
                         question.image = buffer;
                         return chat.save().then(() => {
                             return question;

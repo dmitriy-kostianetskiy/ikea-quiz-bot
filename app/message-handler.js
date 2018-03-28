@@ -10,7 +10,10 @@ let handleMessage = function(msg, bot, provider) {
     };
 
     let _sendPhoto = (photo, options) => {
-        return bot.sendPhoto(msg.chat.id, photo, options);
+        return bot.sendPhoto(msg.chat.id, photo, options, { 
+            filename: '1',
+            contentType: "application/octet-stream"
+         });
     };
 
     let _handleHelpCommand = (msg) => {

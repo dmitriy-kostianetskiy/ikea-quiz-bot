@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "start": "./start.sh",
-    "start.debug": "./start.debug.sh"
+    "start:debug": "./start.debug.sh"
   },
   "repository": {
     "type": "git",
@@ -21,14 +21,14 @@
   },
   "homepage": "https://github.com/redrick-tmn/ikea-quiz-bot#readme",
   "dependencies": {
-    "mongoose": "~4.6.3",
-    "node-telegram-bot-api": "~0.23.3",
-    "gm": "~1.9.0",
-    "express": "~4.14.0",
     "body-parser": "~1.15.2",
     "debug": "~2.2.0",
+    "express": "~4.14.0",
+    "gm": "^1.23.1",
     "jade": "~1.11.0",
+    "jade-bootstrap": "~1.0.9",
+    "mongoose": "~4.6.3",
     "morgan": "~1.7.0",
-    "jade-bootstrap": "~1.0.9"
+    "node-telegram-bot-api": "^0.30.0"
   }
 }
