@@ -72,6 +72,7 @@ class QuizProvider {
     }
 
     _tileImage(answers) {
+        const img = 'http://docs.wand-py.org/en/0.4.1/_images/windows-setup.png';
         const data = gm()
           .in('-page', '+0+0')
           .in('images/' + answers[0].image)
