@@ -5,8 +5,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 var config = {
-    token : process.env.TOKEN,
-    db: process.env.MONGO,
+    token : process.env.TOKEN || '289111243:AAHR2CdgcKdALyZVmSwxbleJOo5IhCMm7R0',
+    db: process.env.MONGO || 'mongodb://ikea-quiz-user:ikea3395@ds033996.mlab.com:33996/ikea-quiz-db',
     answersCount: 4,
     questionsCount: 10,
     imageSize: 256,

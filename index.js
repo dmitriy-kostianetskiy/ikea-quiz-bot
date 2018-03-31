@@ -1,4 +1,4 @@
-"use strict";
+console.log(1);
 
 require("./storage/connection.js");
 let Bot = require('./app/bot.js');
