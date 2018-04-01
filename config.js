@@ -1,5 +1,9 @@
 "use strict";
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load();
+}
+
 var config = {
     token : process.env.TOKEN,
     db: process.env.MONGO,
