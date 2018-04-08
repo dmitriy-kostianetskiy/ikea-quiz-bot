@@ -7,8 +7,8 @@ if (process.env.NODE_ENV !== 'production') {
 export const CONFIG = {
   token : process.env.TOKEN,
   db: process.env.MONGO,
-  questionsCount: 10,
-  imageSize: 256,
+  questionsCount: process.env.QUESTIONS_COUNT || 10,
+  imageSize: process.env.IMAGE_SIZE || 256,
   debug: process.env.NODE_ENV !== 'production',
   webHookUrl: process.env.HEROKU_URL || '0.0.0.0',
   port: process.env.PORT || 80
