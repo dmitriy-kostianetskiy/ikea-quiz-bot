@@ -1,6 +1,6 @@
 # Ikea quiz telegram bot
 
-This is a simple quiz for Telegram. The rules of the game are pretty simple: bot gives you the name of the Ikea product and the picture with four tiles. You need to guess what is this.
+This is a simple quiz-bot for Telegram. The rules of the game are pretty simple: bot gives you the name of the Ikea product and the picture with four tiles. You need to guess what is this.
 
 ## Run
 

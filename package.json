@@ -1,9 +1,10 @@
 {
   "name": "ikea-quiz-bot",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Simple quiz-bot for Telegram",
   "engines": {
-    "node": "8.9.4"
+    "node": "8.9.4",
+    "npm": "5.6.9"
   },
   "main": "index.js",
   "scripts": {
@@ -13,8 +14,8 @@
     "type": "git",
     "url": "git+https://github.com/redrick-tmn/ikea-quiz-bot.git"
   },
-  "author": "",
-  "license": "",
+  "author": "Dmitry Kostianetsky",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/redrick-tmn/ikea-quiz-bot/issues"
   },
