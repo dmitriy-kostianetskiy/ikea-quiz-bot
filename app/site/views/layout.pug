@@ -1,4 +1,4 @@
-extends ../../node_modules/jade-bootstrap/_bootstrap
+extends ../../../node_modules/pug-bootstrap/_bootstrap
 append styles
 	+bootswatch("cosmo")
 	link(href='/stylesheets/style.css', rel='stylesheet')
@@ -24,7 +24,7 @@ block body
 						a(href='/week') Week
 					li
 						a(href='/day') Day
-						
+
 	container.theme-showcase(role='main')
 		block content
 

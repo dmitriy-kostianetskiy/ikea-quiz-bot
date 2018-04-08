@@ -2,19 +2,22 @@ import * as gm from 'gm';
 
 const imageMagic = gm.subClass({ imageMagick: true });
 
-export function buildImage(
-  [image1, image2, image3, image4]: string[],
+export async function buildImage(
+  topLeftImage: string,
+  topRightImage: string,
+  bottomLeftImage: string,
+  bottomRightImage: string,
   size: number
 ): Promise<Buffer> {
   const image = imageMagic(size, size)
     .in('-page', '+0+0')
-    .in(image1)
+    .in(topLeftImage)
     .in('-page', `+${size}+0`)
-    .in(image2)
+    .in(topRightImage)
     .in('-page', `+0+${size}`)
-    .in(image3)
+    .in(bottomLeftImage)
     .in('-page', `+${size}+${size}`)
-    .in(image4)
+    .in(bottomRightImage)
     .mosaic()
     .setFormat('png');
 
