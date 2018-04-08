@@ -24,7 +24,7 @@ if (!CONFIG.debug) {
   bot.setWebHook(CONFIG.webHookUrl + CONFIG.token);
 
   app.post('/' + CONFIG.token, (req, res) => {
-    this.bot.processUpdate(req.body);
+    bot.processUpdate(req.body);
     res.sendStatus(200);
   });
 }
