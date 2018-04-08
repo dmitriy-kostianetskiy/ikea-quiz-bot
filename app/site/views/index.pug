@@ -9,15 +9,15 @@ block content
 					tbody
 						tr
 							td Total games played
-							td #{viewModel.totalGamePlayed}
+							td #{viewModel.totalGamesPlayed || 0}
 						tr
 							td Unique players
-							td #{viewModel.uniquePlayers}
+							td #{viewModel.uniquePlayers || 0}
 			.col-lg-4
 				h2.text-center Top players
 				table.table.table-striped.table-hover
 					tbody
-						each player in viewModel.players
+						each player in viewModel.topPlayers
 							tr
 								td #{player.name}
 								td #{player.score}
