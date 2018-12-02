@@ -14,6 +14,10 @@ Then just run:
 ```bash
 npm start
 ```
+
+## App
+![App Screenshot](https://raw.githubusercontent.com/redrick-tmn/ikea-quiz-bot/master/photo_2018-12-02_23-58-16.jpg)
+
 ## Links
 
 * Telegram Bot Store: https://storebot.me/bot/ikeaquizbot
