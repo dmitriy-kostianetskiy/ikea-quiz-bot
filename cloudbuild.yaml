@@ -1,13 +1,16 @@
 steps:
 # Install
-- name: 'gcr.io/cloud-builders/npm'
+- name: node:10.15.1
+  entrypoint: yarn
   args: ['install']
 # Test
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['run', 'lint']
+- name: node:10.15.1
+  entrypoint: yarn
+  args: ['lint']
 # Build
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['run', 'build']
+- name: node:10.15.1
+  entrypoint: yarn
+  args: ['build']
 # Decrypt
 - name: gcr.io/cloud-builders/gcloud
   args:
@@ -27,7 +30,7 @@ steps:
   - --source=.
   - --entry-point=main
   - --trigger-http
-  - --runtime=nodejs8
+  - --runtime=nodejs10
   - --region=europe-west1
   - --memory=128
   - --env-vars-file=${_ENV_VAR_FILE}

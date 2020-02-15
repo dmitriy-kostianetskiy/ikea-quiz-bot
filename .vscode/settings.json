@@ -4,6 +4,7 @@
     "Webhook",
     "ciphertext",
     "devtool",
+    "entrypoint",
     "gcloud"
   ]
 }

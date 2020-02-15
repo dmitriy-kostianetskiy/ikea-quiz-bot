@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node index.ts",
     "build": "tsc --project tsconfig.json",
+    "lint": "tslint --project tsconfig.json",
     "encrypt:dev": "gcloud kms encrypt --plaintext-file=environments/DEV.yaml --ciphertext-file=environments/DEV.yaml.enc --location=global --keyring=ikea-quiz-bot-key-ring --key=ikea-quiz-bot-key",
     "encrypt:prod": "gcloud kms encrypt --plaintext-file=environments/PROD.yaml --ciphertext-file=environments/PROD.yaml.enc --location=global --keyring=ikea-quiz-bot-key-ring --key=ikea-quiz-bot-key"
   },
