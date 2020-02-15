@@ -1,3 +1,9 @@
 {
-  "typescriptHero.imports.organizeOnSave": true
+  "typescriptHero.imports.organizeOnSave": true,
+  "cSpell.words": [
+    "Webhook",
+    "ciphertext",
+    "devtool",
+    "gcloud"
+  ]
 }
