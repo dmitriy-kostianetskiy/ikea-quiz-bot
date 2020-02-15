@@ -14,4 +14,15 @@
 .gitignore
 
 node_modules
-#!include:.gitignore
+
+yarn.lock
+tslint.json
+tsconfig.json
+README.MD
+cloudbuild.yaml
+environments/DEV.yaml
+environments/PROD.yaml
+environments/ENV.yaml
+environments/DEV.yaml.enc
+environments/PROD.yaml.enc
+.editorconfig
